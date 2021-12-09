@@ -1,3 +1,4 @@
+// ACHO QUE NÃO VAMOS PRECISAR
 #include "snake.hpp"
 
 void Snake::headUp() {

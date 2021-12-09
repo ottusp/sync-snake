@@ -1,5 +1,5 @@
 all:
-	g++ board.cpp main.cpp -o main
+	g++ main.cpp board.hpp snakeGame.hpp -lncurses -o main
 
 run:
 	@make -s all

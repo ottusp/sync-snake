@@ -1,19 +1,33 @@
-#include <iostream>
-#include <vector>
-
-#include "helpers.hpp"
+#pragma once
+#include <ncurses.h> 
 #include "board.hpp"
+#include "snakeGame.hpp"
 
 using namespace std;
-bool gameEnded = false;
+
+#define BOARD_DIM 25
+#define BOARD_ROWS BOARD_DIM
+#define BOARD_COLS BOARD_DIM * 2.5
 
 int main() {
-  Board board;
 
-  while(!gameEnded) {
-    board.printBoard();
-    usleep(1000000);
+  initscr();
+  refresh();  
+
+  noecho();
+
+  SnakeGame game(BOARD_ROWS, BOARD_COLS);
+  
+  while(!game.isOver()) {
+     game.processInput();
+
+     game.updateState();
+
+     game.redraw();
   }
+
+  getch();
+  endwin();
 
   return 0;
 }
