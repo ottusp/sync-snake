@@ -1,6 +1,9 @@
 #pragma once
 #include <ncurses.h>
+#include <time.h>
+#include <stdlib.h>
 #include "board.hpp"
+#include "drawable.hpp"
 
 class SnakeGame {
 
@@ -15,11 +18,10 @@ class SnakeGame {
 
     void processInput() {
       chtype input = board.getInput();
-
     }
 
     void updateState() {
-
+      board.add(Drawable(3, 3, '#'));
     }
 
     void redraw() {

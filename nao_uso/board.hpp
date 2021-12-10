@@ -1,5 +1,6 @@
 #pragma once
 #include <ncurses.h> 
+#include "drawable.hpp"
 
 class Board {
   
@@ -21,6 +22,10 @@ class Board {
 
     void addBorder() {
       box(board_win, 0, 0);
+    }
+
+    void add(Drawable drawable) {
+      addAt(drawable.getY(), drawable.getX(), drawable.getIcon());
     }
 
     void addAt(int y, int x, chtype ch) {

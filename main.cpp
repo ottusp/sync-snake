@@ -1,7 +1,7 @@
-#pragma once
 #include <ncurses.h> 
 #include "board.hpp"
 #include "snakeGame.hpp"
+#include "drawable.hpp"
 
 using namespace std;
 
@@ -19,6 +19,7 @@ int main() {
   SnakeGame game(BOARD_ROWS, BOARD_COLS);
   
   while(!game.isOver()) {
+     
      game.processInput();
 
      game.updateState();

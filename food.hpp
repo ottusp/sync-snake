@@ -1,10 +1,14 @@
-#include "helpers.hpp"
-#include "board.hpp"
+#pragma once
+#include <ncurses.h>
+#include "drawable.hpp"
 
-class Food {
-  private: 
-    position food;
 
+class Food : public Drawable {
+ 
   public:
-    position getDirection(Board board);
+    Apple(int y, int x) {
+        this->y = y; 
+        this->x = x;
+        this->icon = 'Ó';
+    }
 };
