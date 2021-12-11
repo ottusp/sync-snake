@@ -25,7 +25,7 @@ class Drawable {
       return icon;
     }
 
-  private:
+  protected:
     int y, x;
     chtype icon;
 };

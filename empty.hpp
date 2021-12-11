@@ -1,4 +1,4 @@
-#pragma once 
+///#pragma once 
 #include <ncurses.h>
 #include "drawable.hpp"
 
@@ -10,5 +10,4 @@ class Empty : public Drawable {
       this->x = x;
       this->icon = ' ';
     }
-
-}
+};

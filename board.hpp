@@ -1,6 +1,8 @@
 #pragma once
 #include <ncurses.h> 
 #include "drawable.hpp"
+#include <stdlib.h>
+
 
 class Board {
   
@@ -20,6 +22,7 @@ class Board {
       refresh();
     }
 
+
     void addBorder() {
       box(board_win, 0, 0);
     }
@@ -36,6 +39,12 @@ class Board {
       return wgetch(board_win);
     }
 
+    //metodo para encontrar um lugar para inserir a comidinha
+    void getEmptyCoordinates(int &y, int &x) {
+      // fica no loop até encontrar um lugar vazio
+      while((mvwinch(board_win, y = rand() % height, x = rand() % width)) != ' ');
+    }
+
     void clear() {
       wrefresh(board_win);
       addBorder();
@@ -47,10 +56,13 @@ class Board {
 
   private:
     WINDOW *board_win;
+    int height, width;
 
     void construct(int height, int width) {
       int xMax, yMax;
       getmaxyx(stdscr, yMax, xMax); // pegando o tamanho máximo da tela
+      this->height = height;
+      this->width = width;
 
       board_win = newwin(height, width, (yMax/2) - (height/2), (xMax/2) - (width/2)); // definindo o tamanho do board (um quadrado centralizado)
     }
