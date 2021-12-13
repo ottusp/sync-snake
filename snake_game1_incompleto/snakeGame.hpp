@@ -6,6 +6,7 @@
 #include "board.hpp"
 #include "empty.hpp"
 #include "drawable.hpp"
+#include "snake.hpp"
 
 class SnakeGame {
 
@@ -34,14 +35,16 @@ class SnakeGame {
       board.getEmptyCoordinates(y, x);
 
       // criando a comidinha
-      // se já temos uma comidinha, então sobrescrevemos com espaço
-      if(food != NULL)
+      // se já temos uma comidinha e a cobra chegou nela 
+      if(food != NULL && ((snake.head() ))) {
+        //então sobrescrevemos com espaço 
         board.add(Empty(food->getY(), food->getX()));
       
-      // e geramos uma nova comidinha em um lugar aleatorio
-      food = new Food(y, x);
-      board.add(*food);
-      board.add(Drawable(3, 3, '#'));
+        // e geramos uma nova comidinha em um lugar aleatorio
+        food = new Food(y, x);
+        board.add(*food);
+      }
+      //board.add(Drawable(3, 3, '#'));
     }
 
     void redraw() {
@@ -56,4 +59,5 @@ class SnakeGame {
     Board board;
     bool game_over;
     Food *food;
+    Snake *snake;
 };

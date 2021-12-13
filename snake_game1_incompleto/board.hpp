@@ -22,7 +22,6 @@ class Board {
       refresh();
     }
 
-
     void addBorder() {
       box(board_win, 0, 0);
     }

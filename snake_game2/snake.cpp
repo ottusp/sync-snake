@@ -113,8 +113,8 @@ void snakeGame::PrintScore() {
 // posiciona a frutinha na tela
 void snakeGame::PositionFruit() {
 	while(1) {
-		int tmpx = rand()%maxwidth+1;
-		int tmpy = rand()%maxheight+1;
+		int tmpx = (rand() % maxwidth + 1) - 3;
+		int tmpy = (rand() % maxheight + 1) - 3;
 
 		// verifica se a posicao da fruta nao e a mesma da cobra
 		for (int i = 0; i < snake.size(); i++) {

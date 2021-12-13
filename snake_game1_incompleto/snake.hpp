@@ -31,10 +31,11 @@ class SnakePiece : public Drawable {
 
 
 class Snake {
-  std::queue<SnakePiece> prev_pieces;
-  Direction cur_direction;
-
+  
   public:
+    std::queue<SnakePiece> prev_pieces;
+    Direction cur_direction;
+
     Snake() {
       //cur_direction = DOWN;
     }
