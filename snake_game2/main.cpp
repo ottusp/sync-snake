@@ -43,9 +43,8 @@ int UserInput() {
 // tela de inicio
 int InitScreen()  {
 	ClearCentre(3, 2.5);
-    printw("JOGO DA COBRINHA!\n");
-
-	printw("                 Está pronto para começar a jogar?? (S/N)   ");
+    printw("JOGO DA COBRINHA! ");
+	printw("Está pronto para começar a jogar?? (S/N)");
 
 	return UserInput();
 }

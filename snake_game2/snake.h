@@ -6,19 +6,38 @@
 #ifndef SNAKE_GAME_H
 #define SNAKE_GAME_H
 
+/*enum Direction {
+  up,
+  down,
+  left, 
+  right,
+  A,
+  W,
+  S,
+  D
+};*/
+
 struct CharPosition {
 	int x, y;
 	CharPosition(int col, int row);
 	CharPosition();
 };
 
+struct Player {
+	std::vector<CharPosition> snake;
+	char snakeBody;
+	char direction;
+	int score;
+	bool bEatsFruit;
+};
+
 class snakeGame {
 private:
-	int score, del, maxwidth, maxheight;
-	char direction, snakeBody, edgechar, fruitchar;
-	bool bEatsFruit;
+	int del, maxwidth, maxheight; //score
+	char snakeBody, edgechar, fruitchar; //direction
+	//bool bEatsFruit;
 	CharPosition fruit;
-	std::vector<CharPosition> snake;
+	//std::vector<CharPosition> snake;
 
 	void InitGameWindow();
 	void DrawWindow();  
@@ -27,7 +46,7 @@ private:
 	void PositionFruit();
 	bool FatalCollision();
 	void MoveSnake();
-	bool GetsFruit();
+	std::pair<bool, bool> GetsFruit();
 
 public:
 	snakeGame();
