@@ -1,61 +1,40 @@
-#include "snake.h"
+#include <ncurses.h>
+#include <unistd.h>
 
-int maxHeight, maxWidth;
-void PlayGame();
-int InitScreen();
-int FinalScreen();
-void ClearCentre();
-int UserInput();
+#include "board.hpp"
+#include "snakeGame.hpp"
+#include "drawable.hpp"
 
-int main () {
-    // verifica se o usuario que jogar
-	if (InitScreen() == 'S')
-	do {
-		{
-			snakeGame NewSnake;
-			NewSnake.PlayGame();
-		}
-	}
-	while (FinalScreen() == 'S'); // enquanto o usuario quiser continuar jogando
+using namespace std;
 
-	return 0;
-}
+#define BOARD_DIM 25
+#define BOARD_ROWS BOARD_DIM
+#define BOARD_COLS BOARD_DIM * 2.5
 
-// limpa a tela e centraliza o cursor
-void ClearCentre(float x, float y) {
-	clear();
-	initscr(); 
-	noecho();
-	getmaxyx(stdscr, maxHeight, maxWidth);
-	move((maxHeight/y), (maxWidth/x));
-}
+#define DELAY 100// milissegundos
 
-// recebe a tecla digitada pelo usuario
-int UserInput() {
-	int UserInput = getch();
+int main() {
 
-	refresh();
-	endwin();
-	clear();
+  initscr();
+  refresh();
 
-	return UserInput;	
-}
+  noecho();
+  curs_set(0);
 
-// tela de inicio
-int InitScreen()  {
-	ClearCentre(3, 2.5);
+  SnakeGame game(BOARD_ROWS, BOARD_COLS);
+  
+  while(!game.isOver()) {
+    game.processInput();
 
-    printw("JOGO DA COBRINHA!\n");
-	printw(" Está pronto para começar a jogar?? (S/N)");
+    game.updateState();
 
-	return UserInput();
-}
+    game.redraw();
 
-// tela final e pergunta se o usuario quer jogar novamente
-int FinalScreen() {
-	ClearCentre(3, 2.5);
-	
-	printw("QUER JOGAR NOVAMENTE? (S/N)");
+    usleep(DELAY * 1000);
+  }
 
-	return UserInput();
+  getch();
+  endwin();
+
+  return 0;
 }
