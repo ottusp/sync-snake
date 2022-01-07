@@ -20,8 +20,6 @@ using namespace std;
 class SnakeGame {
 
   public:
-
-    // iniciando o jogo
     SnakeGame(int height, int width) {
       board = Board(height, width);
       board.initialize();
@@ -31,7 +29,6 @@ class SnakeGame {
       board.pushBuffer(*food);
       player = new Player(height/2, width/2);
 
-      // para gerar aleatoriamente a fruta
       srand(time(NULL));
     }
 
@@ -61,7 +58,7 @@ class SnakeGame {
     }
 
     void play() {
-      const int delay = 95;
+      const int delay = 40;
 
       while(!isOver()) {
         processInput();
@@ -178,6 +175,6 @@ class SnakeGame {
       board.addText(0, 1, text.c_str());
       board.addText(board.getHeight()-1, 1, p.snake->headCoord().c_str());
       board.addText(board.getHeight()-1, board.getWidth()/3 + 2, p.snake->headDiscreteCoord().c_str());
-      board.addText(board.getHeight()-1, board.getWidth()*2/3, (to_string(board.getBufferSize()).c_str()));
+      board.addText(board.getHeight()-1, board.getWidth()*2/3, (to_string(p.snake->prev_pieces.size()).c_str()));
     }
 };

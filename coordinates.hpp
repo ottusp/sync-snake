@@ -7,6 +7,10 @@ class Coordinates {
       this->x = x;
     }
 
+    int operator==(Coordinates other) {
+      return x == other.x && y == other.y;
+    }
+
     int getY() {
       return y;
     }
