@@ -167,8 +167,8 @@ class SnakeGame {
     void printScore(Player p) {
       string text = p.getName() + "'s score: " + to_string(p.getPoints());
       board.addText(0, 1, text.c_str());
-      board.addText(board.getHeight()-1, 1, p.snake->headCoord().c_str());
-      board.addText(board.getHeight()-1, board.getWidth()/3 + 2, p.snake->headDiscreteCoord().c_str());
+      // board.addText(board.getHeight()-1, 1, p.snake->headCoord().c_str());
+      // board.addText(board.getHeight()-1, board.getWidth()/3 + 2, p.snake->headDiscreteCoord().c_str());
       // board.addText(board.getHeight()-1, board.getWidth()*2/3, (to_string(isOver()).c_str()));
     }
 };
