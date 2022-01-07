@@ -1,6 +1,7 @@
 #pragma once
 
 #include <ncurses.h> 
+#include <queue>
 #include <stdlib.h>
 #include <string>
 
@@ -11,14 +12,40 @@ using namespace std;
 class Board {
   
   public:
-
-    //default
-    Board() {
-      construct(0, 0);
+    Board(): Board(0, 0) {
     }
 
-    Board(int height, int width) {
-      construct(height, width);
+    Board(int height, int width){
+      int xMax, yMax;
+      getmaxyx(stdscr, yMax, xMax);
+      this->height = height;
+      this->width = width;
+
+      board_win = newwin(height, width, (yMax/2) - (height/2), (xMax/2) - (width/2));
+
+      renderBuffer = new queue<Drawable>();
+    }
+
+    Board(const Board& other) {
+      board_win = other.board_win;
+
+      height = other.height;
+      width = other.width;
+
+      renderBuffer = other.renderBuffer;
+    }
+
+    Board& operator=(const Board& other) {
+      if(this != &other) {
+        board_win = other.board_win;
+
+        height = other.height;
+        width = other.width;
+
+        delete renderBuffer;
+        renderBuffer = other.renderBuffer;
+      }
+      return *this;
     }
 
     void initialize() {
@@ -28,6 +55,34 @@ class Board {
 
     void addBorder() {
       box(board_win, 0, 0);
+    }
+
+    void pushBuffer(Drawable drawable) {
+      renderBuffer->push(drawable);
+    }
+
+    void pushBuffer(int y, int x, const char * text) {
+      for (int i = 0; i < x; i++) {
+        Drawable d(Coordinates(y, x+i), text[i]);
+        renderBuffer->push(d);
+      }
+    }
+
+    int processAllBuffer() {
+      int size = renderBuffer->size();
+      for (int i = 0; i < size; i++) {
+        processBuffer();
+      }
+
+      return size;
+    }
+
+    void processBuffer() {
+      if(renderBuffer->size()) {
+        auto d = renderBuffer->front();
+        add(d);
+        renderBuffer->pop();
+      }
     }
 
     void add(Drawable drawable) {
@@ -69,9 +124,15 @@ class Board {
       return width;
     }
 
+    int getBufferSize() {
+      return renderBuffer->size();
+    }
+
   private:
     WINDOW *board_win;
     int height, width;
+
+    queue<Drawable> * renderBuffer;
 
     void construct(int height, int width) {
       int xMax, yMax;

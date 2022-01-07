@@ -28,7 +28,7 @@ class SnakeGame {
       game_over = false;
 
       food = new Food(height/2, width*2/3);
-      board.add(*food);
+      board.pushBuffer(*food);
       player = new Player(height/2, width/2);
 
       // para gerar aleatoriamente a fruta
@@ -61,7 +61,7 @@ class SnakeGame {
     }
 
     void play() {
-      const int delay = 5;
+      const int delay = 95;
 
       while(!isOver()) {
         processInput();
@@ -76,6 +76,7 @@ class SnakeGame {
 
       while(!isOver()) {
         board.refresh();
+        board.processAllBuffer();
 
         usleep(delay * 1000);
       }
@@ -98,15 +99,15 @@ class SnakeGame {
       board.getEmptyCoordinates(y, x);
 
       if(food != NULL && doesPlayerEatFruit(*player)) {
-        board.add(Empty(food->getY(), food->getX()));
+        board.pushBuffer(Empty(food->getY(), food->getX()));
       
         food = new Food(y, x);
-        board.add(*food);
+        board.pushBuffer(*food);
         player->snake->grow();
         player->increasePoints();
       }
 
-      board.add(Empty(player->snake->tail().getY(), player->snake->tail().getX()));
+      board.pushBuffer(Empty(player->snake->tail().getY(), player->snake->tail().getX()));
       player->snake->move();
       addSnakeToBoard();
 
@@ -158,13 +159,13 @@ class SnakeGame {
     
     void addSnakeToBoard() {
       for(auto piece = player->snake->prev_pieces.begin(); piece != player->snake->prev_pieces.end(); piece++) {
-        board.add(*piece);
+        board.pushBuffer(*piece);
       }
     }
 
     bool hasCollision(Drawable piece) {
-      return piece.getX() == board.getWidth() - 1 || piece.getY() == board.getHeight() - 1
-        || piece.getX() == 0 || piece.getY() == 0;
+      return piece.getX() >= board.getWidth() - 1 || piece.getY() >= board.getHeight() - 1
+        || piece.getX() <= 0 || piece.getY() <= 0;
     }
 
     bool doesPlayerEatFruit(Player p) {
@@ -177,6 +178,6 @@ class SnakeGame {
       board.addText(0, 1, text.c_str());
       board.addText(board.getHeight()-1, 1, p.snake->headCoord().c_str());
       board.addText(board.getHeight()-1, board.getWidth()/3 + 2, p.snake->headDiscreteCoord().c_str());
-      board.addText(board.getHeight()-1, board.getWidth()*2/3, (to_string(food->getX()) + " " + to_string(food->getY())).c_str());
+      board.addText(board.getHeight()-1, board.getWidth()*2/3, (to_string(board.getBufferSize()).c_str()));
     }
 };
