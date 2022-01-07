@@ -23,7 +23,7 @@ class SnakeGame {
     SnakeGame(int height, int width) {
       board = Board(height, width);
       board.initialize();
-      game_over = false;
+      gameOver = false;
 
       food = new Food(height/2, width*2/3);
       board.pushBuffer(*food);
@@ -34,10 +34,12 @@ class SnakeGame {
 
     SnakeGame(const SnakeGame& other) {
       board = other.board;
-
       food = new Food(board.getHeight()/2, board.getWidth()*2/3);
-
       player = new Player(board.getHeight()/2, board.getWidth()/2);
+
+      gameOver = other.gameOver;
+      height = other.height;
+      width = other.width;
     }
 
     SnakeGame& operator=(const SnakeGame& other) {
@@ -48,6 +50,10 @@ class SnakeGame {
         board = other.board;
         food = other.food;
         player = other.player;
+        
+        gameOver = other.gameOver;
+        height = other.height;
+        width = other.width;
       }
       return *this;
     }
@@ -58,25 +64,13 @@ class SnakeGame {
     }
 
     void play() {
-      const int delay = 40;
-
-      while(!isOver()) {
-        processInput();
-        updateState();
-
-        usleep(delay * 1000);
-      }
+      processInput();
+      updateState();
     }
 
     void redraw() {
-      const int delay = 36;
-
-      while(!isOver()) {
-        board.refresh();
-        board.processAllBuffer();
-
-        usleep(delay * 1000);
-      }
+      board.processAllBuffer();
+      board.refresh();
     }
 
     void processInput() {
@@ -109,21 +103,21 @@ class SnakeGame {
       addSnakeToBoard();
 
       if (hasCollision(player->snake->head())) {
-        game_over = true;
+        gameOver = true;
       }
 
       printScore(*player);
     }
 
     bool isOver() {
-      return game_over;
+      return gameOver;
     }
   
   private:
     int height;
     int width;
 
-    bool game_over;
+    bool gameOver;
 
     Board board;
     Food *food;
@@ -175,6 +169,6 @@ class SnakeGame {
       board.addText(0, 1, text.c_str());
       board.addText(board.getHeight()-1, 1, p.snake->headCoord().c_str());
       board.addText(board.getHeight()-1, board.getWidth()/3 + 2, p.snake->headDiscreteCoord().c_str());
-      board.addText(board.getHeight()-1, board.getWidth()*2/3, (to_string(p.snake->prev_pieces.size()).c_str()));
+      // board.addText(board.getHeight()-1, board.getWidth()*2/3, (to_string(isOver()).c_str()));
     }
 };
