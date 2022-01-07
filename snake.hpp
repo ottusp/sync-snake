@@ -88,16 +88,18 @@ class Snake {
 
       xHead += horizontalShift;
       yHead += verticalShift;
-      Coordinates actualCell = getDiscreteHeadCell();
+      Coordinates discreteCell = getDiscreteHeadCell();
 
-      SnakePiece piece(actualCell);
-      addPiece(piece);
-
-      if(!willGrow) {
-        removePiece();
+      if (!(discreteCell.getY() == head().getY() && discreteCell.getX() == head().getX()) ) {
+        SnakePiece piece(discreteCell);
+        addPiece(piece);
+        
+        if(!willGrow) {
+          removePiece();
+        }
+        willGrow = false;
       }
 
-      willGrow = false;
     }
 
     void changeDirection(Direction dir) {
