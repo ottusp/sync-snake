@@ -116,8 +116,8 @@ class Snake {
   private:
     bool willGrow;
 
-    float vSpeed = 0.025f;
-    float hSpeed = 0.05f;
+    float vSpeed = 0.25f;
+    float hSpeed = 0.5f;
 
     float xHead;
     float yHead;
