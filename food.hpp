@@ -6,6 +6,6 @@
 class Food : public Drawable {
  
   public:
-      Food(int y, int x): Drawable(y, x, 'Y') {
+    Food(int y, int x): Drawable(y, x, 'Y') {
     }
 };

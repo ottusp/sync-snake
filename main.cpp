@@ -1,4 +1,6 @@
+#include <iostream>
 #include <ncurses.h>
+#include <thread>
 #include <unistd.h>
 
 #include "board.hpp"
@@ -11,7 +13,13 @@ using namespace std;
 #define BOARD_ROWS BOARD_DIM
 #define BOARD_COLS BOARD_DIM * 2.5
 
-#define DELAY 100// milissegundos
+void play(SnakeGame game) {
+  game.play();
+}
+
+void redraw(SnakeGame game) {
+  game.redraw();
+}
 
 int main() {
 
@@ -22,16 +30,12 @@ int main() {
   curs_set(0);
 
   SnakeGame game(BOARD_ROWS, BOARD_COLS);
-  
-  while(!game.isOver()) {
-    game.processInput();
 
-    game.updateState();
+  thread playThread(play, game);
+  thread redrawThread(redraw, game);
 
-    game.redraw();
-
-    usleep(DELAY * 1000);
-  }
+  playThread.join();
+  redrawThread.join();
 
   getch();
   endwin();

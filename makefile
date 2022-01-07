@@ -1,7 +1,7 @@
 program = snake
 
 all:
-	g++ main.cpp -lncurses -o ${program}
+	g++ main.cpp -lncurses -pthread -o ${program}
 
 run:
 	@make -s all
@@ -10,3 +10,6 @@ run:
 
 clear:
 	rm -f ${program}
+
+valgrind:
+	valgrind ./${program}

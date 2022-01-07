@@ -30,15 +30,55 @@ class SnakeGame {
       food = new Food(height/2, width*2/3);
       board.add(*food);
       player = new Player(height/2, width/2);
-      board.addAt(height/2,  width/2, 'A');
 
       // para gerar aleatoriamente a fruta
       srand(time(NULL));
     }
 
+    SnakeGame(const SnakeGame& other) {
+      board = other.board;
+
+      food = new Food(board.getHeight()/2, board.getWidth()*2/3);
+
+      player = new Player(board.getHeight()/2, board.getWidth()/2);
+    }
+
+    SnakeGame& operator=(const SnakeGame& other) {
+      if(this != &other) {
+        delete food;
+        delete player;
+
+        board = other.board;
+        food = other.food;
+        player = other.player;
+      }
+      return *this;
+    }
+
     ~SnakeGame() {
       delete food;
       delete player;
+    }
+
+    void play() {
+      const int delay = 5;
+
+      while(!isOver()) {
+        processInput();
+        updateState();
+
+        usleep(delay * 1000);
+      }
+    }
+
+    void redraw() {
+      const int delay = 36;
+
+      while(!isOver()) {
+        board.refresh();
+
+        usleep(delay * 1000);
+      }
     }
 
     void processInput() {
@@ -77,17 +117,17 @@ class SnakeGame {
       printScore(*player);
     }
 
-    void redraw() {
-      board.refresh();
-    }
-
     bool isOver() {
       return game_over;
     }
   
   private:
-    Board board;
+    int height;
+    int width;
+
     bool game_over;
+
+    Board board;
     Food *food;
     Player *player;
 
@@ -135,5 +175,8 @@ class SnakeGame {
     void printScore(Player p) {
       string text = p.getName() + "'s score: " + to_string(p.getPoints());
       board.addText(0, 1, text.c_str());
+      board.addText(board.getHeight()-1, 1, p.snake->headCoord().c_str());
+      board.addText(board.getHeight()-1, board.getWidth()/3 + 2, p.snake->headDiscreteCoord().c_str());
+      board.addText(board.getHeight()-1, board.getWidth()*2/3, (to_string(food->getX()) + " " + to_string(food->getY())).c_str());
     }
 };
