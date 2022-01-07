@@ -14,6 +14,9 @@ class SnakePiece : public Drawable {
 
     SnakePiece(int y, int x): Drawable(y, x, 'o') {
     }
+
+    SnakePiece(Coordinates coord): SnakePiece(coord.getY(), coord.getX()) {
+    }
 };
 
 
@@ -63,31 +66,31 @@ class Snake {
     }
 
     void move() {
-      int verticalShift = 0, horizontalShift = 0;
+      float verticalShift = 0, horizontalShift = 0;
 
       switch(cur_direction) {
         case UP:
-          verticalShift = -1; // * vSpeed;
+          verticalShift = -1 * vSpeed;
           break;
 
         case DOWN:
-          verticalShift = 1; // * vSpeed;
+          verticalShift = 1 * vSpeed;
           break;
 
         case LEFT:
-          horizontalShift = -1; // * hSpeed;
+          horizontalShift = -1 * hSpeed;
           break;
 
         case RIGHT:
-          horizontalShift = 1; // * hSpeed;
+          horizontalShift = 1 * hSpeed;
           break;
       }
 
-      // xHead += horizontalShift;
-      // yHead += verticalShift;
-      // Drawable actualCell = getActualHeadCell();
+      xHead += horizontalShift;
+      yHead += verticalShift;
+      Coordinates actualCell = getDiscreteHeadCell();
 
-      SnakePiece piece(head().getY() + verticalShift, head().getX() + horizontalShift);
+      SnakePiece piece(actualCell);
       addPiece(piece);
 
       if(!willGrow) {
@@ -101,16 +104,25 @@ class Snake {
       cur_direction = dir;
     }
 
+    string headCoord() {
+      return to_string(xHead) + " " + to_string(yHead);
+    }
+
+    string headDiscreteCoord() {
+      Coordinates actualCell = getDiscreteHeadCell();
+      return to_string(actualCell.getX()) + " " + to_string(actualCell.getY());
+    }
+
   private:
     bool willGrow;
 
-    float vSpeed = 0.25f;
-    float hSpeed = 0.5f;
+    float vSpeed = 0.025f;
+    float hSpeed = 0.05f;
 
     float xHead;
     float yHead;
 
-    // Drawable getActualHeadCell() {
-
-    // }
+    Coordinates getDiscreteHeadCell() {
+      return Coordinates(static_cast<int>(yHead), static_cast<int>(xHead));
+    }
 };
