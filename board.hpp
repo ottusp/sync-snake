@@ -68,13 +68,11 @@ class Board {
       }
     }
 
-    int processAllBuffer() {
+    void processAllBuffer() {
       int size = renderBuffer->size();
       for (int i = 0; i < size; i++) {
         processBuffer();
       }
-
-      return size;
     }
 
     void processBuffer() {
